@@ -241,6 +241,14 @@ func (r unstructuredScalableResource) InstanceCapacity() (map[corev1.ResourceNam
 		capacityAnnotations[corev1.ResourceMemory] = mem
 	}
 
+	disk, err := r.InstanceEphemeralDiskCapacityAnnotation()
+	if err != nil {
+		return nil, err
+	}
+	if !disk.IsZero() {
+		capacityAnnotations[corev1.ResourceEphemeralStorage] = disk
+	}
+
 	gpuCount, err := r.InstanceGPUCapacityAnnotation()
 	if err != nil {
 		return nil, err
@@ -284,6 +292,10 @@ func (r unstructuredScalableResource) InstanceCapacity() (map[corev1.ResourceNam
 	}
 
 	return capacity, nil
+}
+
+func (r unstructuredScalableResource) InstanceEphemeralDiskCapacityAnnotation() (resource.Quantity, error) {
+	return parseEphemeralDiskCapacity(r.unstructured.GetAnnotations())
 }
 
 func (r unstructuredScalableResource) InstanceCPUCapacityAnnotation() (resource.Quantity, error) {

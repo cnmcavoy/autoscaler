@@ -286,16 +286,18 @@ func TestSetSizeAndReplicas(t *testing.T) {
 func TestAnnotations(t *testing.T) {
 	cpuQuantity := resource.MustParse("2")
 	memQuantity := resource.MustParse("1024Mi")
+	diskQuantity := resource.MustParse("6Gi")
 	gpuQuantity := resource.MustParse("1")
 	maxPodsQuantity := resource.MustParse("42")
 	expectedTaints := []v1.Taint{{Key: "key1", Effect: v1.TaintEffectNoSchedule, Value: "value1"}, {Key: "key2", Effect: v1.TaintEffectNoExecute, Value: "value2"}}
 	annotations := map[string]string{
-		cpuKey:      cpuQuantity.String(),
-		memoryKey:   memQuantity.String(),
-		gpuCountKey: gpuQuantity.String(),
-		maxPodsKey:  maxPodsQuantity.String(),
-		taintsKey:   "key1=value1:NoSchedule,key2=value2:NoExecute",
-		labelsKey:   "key3=value3,key4=value4,key5=value5",
+		cpuKey:          cpuQuantity.String(),
+		memoryKey:       memQuantity.String(),
+		diskCapacityKey: diskQuantity.String(),
+		gpuCountKey:     gpuQuantity.String(),
+		maxPodsKey:      maxPodsQuantity.String(),
+		taintsKey:       "key1=value1:NoSchedule,key2=value2:NoExecute",
+		labelsKey:       "key3=value3,key4=value4,key5=value5",
 	}
 
 	test := func(t *testing.T, testConfig *testConfig, testResource *unstructured.Unstructured) {
@@ -317,6 +319,12 @@ func TestAnnotations(t *testing.T) {
 			t.Fatal(err)
 		} else if memQuantity.Cmp(mem) != 0 {
 			t.Errorf("expected %v, got %v", memQuantity, mem)
+		}
+
+		if disk, err := sr.InstanceEphemeralDiskCapacityAnnotation(); err != nil {
+			t.Fatal(err)
+		} else if diskQuantity.Cmp(disk) != 0 {
+			t.Errorf("expected %v, got %v", diskQuantity, disk)
 		}
 
 		if gpu, err := sr.InstanceGPUCapacityAnnotation(); err != nil {
