@@ -300,6 +300,7 @@ func (csr *ClusterStateRegistry) UpdateNodes(nodes []*apiv1.Node, nodeInfosForGr
 	}
 	cloudProviderNodesRemoved := csr.getCloudProviderDeletedNodes(nodes)
 	notRegistered := getNotRegisteredNodes(nodes, cloudProviderNodeInstances, currentTime)
+	klog.V(5).Infof("csr cloudProviderNodeInstances: %v, cloudProviderNodesRemoved: %v, notRegistered: %v", cloudProviderNodeInstances, cloudProviderNodesRemoved, notRegistered)
 
 	csr.Lock()
 	defer csr.Unlock()
