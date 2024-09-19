@@ -826,6 +826,7 @@ The following startup parameters are supported for cluster autoscaler:
 | `record-duplicated-events` | Enable the autoscaler to print duplicated events within a 5 minute window. | false
 | `debugging-snapshot-enabled` | Whether the debugging snapshot of cluster autoscaler feature is enabled. | false
 | `node-delete-delay-after-taint` | How long to wait before deleting a node after tainting it. | 5 seconds
+| `external-node-deletion` | If true, CA will not adjust replica counts to delete failed nodes, deletion is delegated to the cloud provider. | false
 
 # Troubleshooting:
 
