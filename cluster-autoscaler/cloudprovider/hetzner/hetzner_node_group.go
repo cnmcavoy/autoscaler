@@ -158,6 +158,13 @@ func (n *hetznerNodeGroup) AtomicIncreaseSize(delta int) error {
 	return cloudprovider.ErrNotImplemented
 }
 
+// MarkNodesForDeletion notifies the cloud provider that the provided nodes need to be deleted.
+// The cloud provider is expected to handle deletion of the marked nodes gracefully.
+// Error is returned either on failure or if the given node doesn't belong to this node group.
+func (n *hetznerNodeGroup) MarkNodesForDeletion(nodes []*apiv1.Node) error {
+	return cloudprovider.ErrNotImplemented
+}
+
 // DeleteNodes deletes nodes from this node group (and also increasing the size
 // of the node group with that). Error is returned either on failure or if the
 // given node doesn't belong to this node group. This function should wait

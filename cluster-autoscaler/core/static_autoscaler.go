@@ -822,7 +822,14 @@ func (a *StaticAutoscaler) removeOldUnregisteredNodes(allUnregisteredNodes []clu
 			continue
 		}
 
-		err = nodeGroup.DeleteNodes(nodesToDelete)
+		if a.AutoscalingContext.AutoscalingOptions.ExternalNodeDeletion {
+			// allow the cloud provider to handle node deletion instead of deleting nodes through downscaling replica counts
+			fmt.Printf("MarkNodesForDeletion (removeOldUnregisteredNodes)\n")
+			err = nodeGroup.MarkNodesForDeletion(nodesToDelete)
+		} else {
+			fmt.Printf("DeleteNodes (removeOldUnregisteredNodes)\n")
+			err = nodeGroup.DeleteNodes(nodesToDelete)
+		}
 		csr.InvalidateNodeInstancesCacheEntry(nodeGroup)
 		if err != nil {
 			klog.Warningf("Failed to remove %v unregistered nodes from node group %s: %v", len(nodesToDelete), nodeGroupId, err)
@@ -866,7 +873,14 @@ func (a *StaticAutoscaler) deleteCreatedNodesWithErrors() {
 		if nodeGroup == nil {
 			err = fmt.Errorf("node group %s not found", nodeGroupId)
 		} else if nodesToDelete, err = overrideNodesToDeleteForZeroOrMax(a.NodeGroupDefaults, nodeGroup, nodesToDelete); err == nil {
-			err = nodeGroup.DeleteNodes(nodesToDelete)
+			if a.AutoscalingContext.AutoscalingOptions.ExternalNodeDeletion {
+				// allow the cloud provider to handle node deletion instead of deleting nodes through downscaling replica counts
+				fmt.Printf("MarkNodesForDeletion (deleteCreatedNodesWithErrors)\n")
+				err = nodeGroup.MarkNodesForDeletion(nodesToDelete)
+			} else {
+				fmt.Printf("DeleteNodes (deleteCreatedNodesWithErrors)\n")
+				err = nodeGroup.DeleteNodes(nodesToDelete)
+			}
 		}
 
 		if err != nil {

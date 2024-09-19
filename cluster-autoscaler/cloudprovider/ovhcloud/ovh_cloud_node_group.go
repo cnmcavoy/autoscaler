@@ -116,6 +116,13 @@ func (ng *NodeGroup) AtomicIncreaseSize(delta int) error {
 	return cloudprovider.ErrNotImplemented
 }
 
+// MarkNodesForDeletion notifies the cloud provider that the provided nodes need to be deleted.
+// The cloud provider is expected to handle deletion of the marked nodes gracefully.
+// Error is returned either on failure or if the given node doesn't belong to this node group.
+func (ng *NodeGroup) MarkNodesForDeletion(nodes []*apiv1.Node) error {
+	return cloudprovider.ErrNotImplemented
+}
+
 // DeleteNodes deletes the nodes from the group.
 func (ng *NodeGroup) DeleteNodes(nodes []*apiv1.Node) error {
 	// DeleteNodes is called in goroutine so it can run in parallel

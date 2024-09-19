@@ -177,3 +177,10 @@ func (agentPool *VMsPool) TemplateNodeInfo() (*schedulerframework.NodeInfo, erro
 func (agentPool *VMsPool) AtomicIncreaseSize(delta int) error {
 	return cloudprovider.ErrNotImplemented
 }
+
+// MarkNodesForDeletion notifies the cloud provider that the provided nodes need to be deleted.
+// The cloud provider is expected to handle deletion of the marked nodes gracefully.
+// Error is returned either on failure or if the given node doesn't belong to this node group.
+func (agentPool *VMsPool) MarkNodesForDeletion(nodes []*apiv1.Node) error {
+	return cloudprovider.ErrNotImplemented
+}

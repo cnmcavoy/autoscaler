@@ -19,6 +19,9 @@ package kamatera
 import (
 	"context"
 	"fmt"
+	"strconv"
+	"strings"
+
 	apiv1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -27,8 +30,6 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/klog/v2"
 	schedulerframework "k8s.io/kubernetes/pkg/scheduler/framework"
-	"strconv"
-	"strings"
 )
 
 // NodeGroup implements cloudprovider.NodeGroup interface. NodeGroup contains
@@ -86,6 +87,13 @@ func (n *NodeGroup) IncreaseSize(delta int) error {
 
 // AtomicIncreaseSize is not implemented.
 func (n *NodeGroup) AtomicIncreaseSize(delta int) error {
+	return cloudprovider.ErrNotImplemented
+}
+
+// MarkNodesForDeletion notifies the cloud provider that the provided nodes need to be deleted.
+// The cloud provider is expected to handle deletion of the marked nodes gracefully.
+// Error is returned either on failure or if the given node doesn't belong to this node group.
+func (n *NodeGroup) MarkNodesForDeletion(nodes []*apiv1.Node) error {
 	return cloudprovider.ErrNotImplemented
 }
 

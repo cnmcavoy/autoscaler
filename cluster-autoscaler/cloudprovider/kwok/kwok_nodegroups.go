@@ -92,6 +92,13 @@ func (nodeGroup *NodeGroup) AtomicIncreaseSize(delta int) error {
 	return cloudprovider.ErrNotImplemented
 }
 
+// MarkNodesForDeletion notifies the cloud provider that the provided nodes need to be deleted.
+// The cloud provider is expected to handle deletion of the marked nodes gracefully.
+// Error is returned either on failure or if the given node doesn't belong to this node group.
+func (nodeGroup *NodeGroup) MarkNodesForDeletion(nodes []*apiv1.Node) error {
+	return cloudprovider.ErrNotImplemented
+}
+
 // DeleteNodes deletes the specified nodes from the node group.
 func (nodeGroup *NodeGroup) DeleteNodes(nodes []*apiv1.Node) error {
 	size := nodeGroup.targetSize

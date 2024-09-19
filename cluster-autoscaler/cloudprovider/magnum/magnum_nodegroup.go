@@ -93,6 +93,13 @@ func (ng *magnumNodeGroup) AtomicIncreaseSize(delta int) error {
 	return cloudprovider.ErrNotImplemented
 }
 
+// MarkNodesForDeletion notifies the cloud provider that the provided nodes need to be deleted.
+// The cloud provider is expected to handle deletion of the marked nodes gracefully.
+// Error is returned either on failure or if the given node doesn't belong to this node group.
+func (ng *magnumNodeGroup) MarkNodesForDeletion(nodes []*apiv1.Node) error {
+	return cloudprovider.ErrNotImplemented
+}
+
 // deleteNodes deletes a set of nodes chosen by the autoscaler.
 func (ng *magnumNodeGroup) DeleteNodes(nodes []*apiv1.Node) error {
 	ng.clusterUpdateLock.Lock()
