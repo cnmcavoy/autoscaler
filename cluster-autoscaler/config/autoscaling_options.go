@@ -282,6 +282,8 @@ type AutoscalingOptions struct {
 	ParallelDrain bool
 	// NodeGroupSetRatio is a collection of ratios used by CA used to make scaling decisions.
 	NodeGroupSetRatios NodeGroupDifferenceRatios
+	// ExternalNodeDeletion controls whether or not CA will adjust replica counts to delete failed nodes. If true, replica counts are only modifed for scale up/down events and responsibility for the deletion of failed nodes is delegated to the cloud provider.
+	ExternalNodeDeletion bool
 	// dynamicNodeDeleteDelayAfterTaintEnabled is used to enable/disable dynamic adjustment of NodeDeleteDelayAfterTaint
 	// based on the latency between the CA and the api-server
 	DynamicNodeDeleteDelayAfterTaintEnabled bool

@@ -102,6 +102,13 @@ func (ng *equinixMetalNodeGroup) AtomicIncreaseSize(delta int) error {
 	return cloudprovider.ErrNotImplemented
 }
 
+// MarkNodesForDeletion notifies the cloud provider that the provided nodes need to be deleted.
+// The cloud provider is expected to handle deletion of the marked nodes gracefully.
+// Error is returned either on failure or if the given node doesn't belong to this node group.
+func (ng *equinixMetalNodeGroup) MarkNodesForDeletion(nodes []*apiv1.Node) error {
+	return cloudprovider.ErrNotImplemented
+}
+
 // deleteNodes deletes a set of nodes chosen by the autoscaler.
 //
 // The process of deletion depends on the implementation of equinixMetalManager,
